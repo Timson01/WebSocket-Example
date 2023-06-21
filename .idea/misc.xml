@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Android Studio Projects/Training projects/EchoWebSocket/app/src/main/res/drawable/edittext_design.xml" value="0.12" />
         <entry key="..\:/Android Studio Projects/Training projects/EchoWebSocket/app/src/main/res/drawable/ic_image_black_24dp.xml" value="0.176" />
         <entry key="..\:/Android Studio Projects/Training projects/EchoWebSocket/app/src/main/res/layout/activity_main.xml" value="0.25" />
       </map>
