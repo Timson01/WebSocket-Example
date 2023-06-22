@@ -30,19 +30,19 @@ class MainViewModel @Inject constructor(
     }
 
     override fun onWebSocketOpen() {
-        _webSocketResult.value = WebSocketResult.WebSocketOpen()
+        _webSocketResult.postValue(WebSocketResult.WebSocketOpen())
     }
 
     override fun onMessageReceived(message: String) {
-        _webSocketResult.value = WebSocketResult.WebSocketMessageReceived(message)
+        _webSocketResult.postValue(WebSocketResult.WebSocketMessageReceived(message))
     }
 
     override fun onWebSocketClosed() {
-        _webSocketResult.value = WebSocketResult.WebSocketClosed()
+        _webSocketResult.postValue(WebSocketResult.WebSocketClosed())
     }
 
     override fun onWebSocketFailure(throwable: Throwable) {
-        _webSocketResult.value = WebSocketResult.WebSocketFailure(throwable.message)
+        _webSocketResult.postValue(WebSocketResult.WebSocketFailure(throwable.message))
     }
 
 
