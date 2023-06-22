@@ -3,6 +3,7 @@ package space.timur.echowebsocket.data.remote
 import android.util.Log
 import okhttp3.*
 import okio.ByteString.Companion.decodeHex
+import space.timur.echowebsocket.common.WebSocketCallback
 
 class WebSocketApi(
     private val client: OkHttpClient,
@@ -11,8 +12,8 @@ class WebSocketApi(
 
     private lateinit var webSocket: WebSocket
 
-    fun connectWebSocket() {
-        webSocket = client.newWebSocket(request, EchoWebSocketListener())
+    fun connectWebSocket(callback: WebSocketCallback) {
+        webSocket = client.newWebSocket(request, EchoWebSocketListener(callback))
     }
 
     fun sendMessage(message: String) {
@@ -23,25 +24,28 @@ class WebSocketApi(
         webSocket.cancel()
     }
 
-    private class EchoWebSocketListener : WebSocketListener() {
+    private class EchoWebSocketListener(private val callback: WebSocketCallback) : WebSocketListener() {
         override fun onOpen(webSocket: WebSocket, response: Response) {
             webSocket.send("Hello, it's Tima!")
             webSocket.send("What's up?")
             webSocket.send("deadbeef".decodeHex())
-            webSocket.close(NORMAL_CLOSURE_STATUS, "Goodbye !")
+            callback.onWebSocketOpen()
         }
 
         override fun onMessage(webSocket: WebSocket, text: String) {
             output("Receiving : $text")
+            callback.onMessageReceived(text)
         }
 
         override fun onClosing(webSocket: WebSocket, code: Int, reason: String) {
             webSocket.close(NORMAL_CLOSURE_STATUS, null)
             output("Closing : $code / $reason")
+            callback.onWebSocketClosed()
         }
 
         override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
             output("Error : " + t.message)
+            callback.onWebSocketFailure(t)
         }
 
         companion object {
